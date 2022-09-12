@@ -10,7 +10,7 @@ def openBuyWindow(price,product):
                     [sg.Button('Pay',button_color="orange"), sg.Button('Cancel',button_color='red')]]
         window = sg.Window('Checkout!', layout, modal=True)
 
-        cash = [[1,0,0,0], [2,0,0,0], [5,0,0,0]] #Value, Inserted , QAvailible, QReturn to client
+        cash = [[1,0], [2,0], [5,0]] #Value, Inserted , QAvailible, QReturn to client
         minus = False
         easter = 0
 
@@ -20,7 +20,7 @@ def openBuyWindow(price,product):
                 break
 
             elif event == 'Pay' and (cash[0][1] + cash[1][1]*2 + cash[2][1]*5) < price:
-                sg.popup("not enoght money big bro", title=":(",text_color="red")
+                sg.popup("not enoght money", title=":(",text_color="red")
 
             elif event == 'Pay' and (cash[0][1] + cash[1][1]*2 + cash[2][1]*5) == price:
                 sg.popup("Enjoy your purchase!", title=":)",text_color="green")
@@ -42,7 +42,8 @@ def openBuyWindow(price,product):
                 window['2'].update("+$2",button_color ='green')
                 window['3'].update("+$5",button_color ='green')
                 minus = False
-            
+            elif (event == '1' or  event == '2' or event == '3') and (minus == False and cash[0][1] + cash[1][1]*2 + cash[2][1]*5 >= 8):
+                sg.popup("Maximum of money  reached", title=":(",text_color="red")
             elif event == '1' and minus == False:
                 cash[0][1] += 1
             elif event == '2' and minus == False:
@@ -83,13 +84,13 @@ def openBuyWindow(price,product):
     
 
 #! Define the main window's contents
-layout = [  [sg.Text("Pick your poison"), sg.Button('LOLI1',tooltip='Price 6'), sg.Button('LOLI2',tooltip='Price 7'), sg.Button('LOLI3',tooltip='Price 8')],
+layout = [  [sg.Text("Pick your candy"), sg.Button('CANDY 1',tooltip='Price 6'), sg.Button('CANDY 2',tooltip='Price 7'), sg.Button('CANDY 3',tooltip='Price 8')],
             [sg.Text(key='-PRICE-')],
-            [sg.Image(key="-IMAGE-", size=(300,300), background_color="white smoke"), sg.Slider(range=(1,10),tooltip="Quantity",key='-QUANTITY-')],
+            [sg.Image(key="-IMAGE-", size=(300,300), background_color="white smoke")],
             [sg.Button('Checkout', button_color='green') ,sg.Button('Quit', button_color="red"),sg.Text(key='-WARNING-')]] 
 
 #! Create main window
-window = sg.Window('Candy shop .ft 50cents,ivete sangalo', layout) 
+window = sg.Window('Candy shop', layout) 
 
 price = 0 
 product = "none"
@@ -101,43 +102,43 @@ while True:
         break
 
     #Button Presses
-    elif event == 'LOLI1':
+    elif event == 'CANDY 1':
         price = 6
-        product = "Kanna"
-        window['-PRICE-'].update('Kanna >///////< |$'+ str(price) + '|', text_color ='lime green')
+        product = "CANDY 1"
+        window['-PRICE-'].update('CANDY 1|$'+ str(price) + '|', text_color ='lime green')
 
-        window['LOLI1'].update(button_color='green')
-        window['LOLI2'].update(button_color='gray')
-        window['LOLI3'].update(button_color='gray')
-        window['-IMAGE-'].update(filename='C:/Users/Dark/Desktop/ChangeMachine/kanna.png')
+        window['CANDY 1'].update(button_color='green')
+        window['CANDY 2'].update(button_color='gray')
+        window['CANDY 3'].update(button_color='gray')
+        window['-IMAGE-'].update(filename='C:/Users/Dark/Desktop/ChangeMachine/CANDY 1.png')
 
-    elif event == 'LOLI2':
+    elif event == 'CANDY 2':
         price = 7
-        product = "Shiro"
-        window['-PRICE-'].update('Shiro :o |$'+ str(price) + '|', text_color ='lime green')
+        product = "CANDY 2"
+        window['-PRICE-'].update('CANDY 2|$'+ str(price) + '|', text_color ='lime green')
 
-        window['LOLI1'].update(button_color='gray')
-        window['LOLI2'].update(button_color='green')
-        window['LOLI3'].update(button_color='gray')
-        window['-IMAGE-'].update(filename='C:/Users/Dark/Desktop/ChangeMachine/shiro.png')
+        window['CANDY 1'].update(button_color='gray')
+        window['CANDY 2'].update(button_color='green')
+        window['CANDY 3'].update(button_color='gray')
+        window['-IMAGE-'].update(filename='C:/Users/Dark/Desktop/ChangeMachine/CANDY 2.png')
 
-    elif event == 'LOLI3':
+    elif event == 'CANDY 3':
         price = 8
-        product = "Sagiri"
-        window['-PRICE-'].update('Sagiri |$'+ str(price) + '|', text_color ='lime green')
+        product = "CANDY 3"
+        window['-PRICE-'].update('CANDY 3|$'+ str(price) + '|', text_color ='lime green')
 
-        window['LOLI1'].update(button_color='gray')
-        window['LOLI2'].update(button_color='gray')
-        window['LOLI3'].update(button_color='green')
-        window['-IMAGE-'].update(filename='C:/Users/Dark/Desktop/ChangeMachine/sagiri.png')
+        window['CANDY 1'].update(button_color='gray')
+        window['CANDY 2'].update(button_color='gray')
+        window['CANDY 3'].update(button_color='green')
+        window['-IMAGE-'].update(filename='C:/Users/Dark/Desktop/ChangeMachine/CANDY 3.png')
     
     elif event == 'Checkout':
 
         if product == "none":
-            window['-WARNING-'].update("Don't forget to pick your loli!",text_color = "red")
+            window['-WARNING-'].update("Don't forget to choose your candy!",text_color = "red")
 
         else:
-            openBuyWindow(values["-QUANTITY-"]*price ,product)
+            openBuyWindow(price ,product)
 
 
 window.close()             
