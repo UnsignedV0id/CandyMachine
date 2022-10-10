@@ -15,9 +15,9 @@ SPEED = 1
 ELEVATOR_LIMIT = 8
 
 #! Define the main window's contents (its a mess, dont even try to read it)
-layout = [[[sg.Image(key="-3F-", size=(300,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\F3.png"),sg.Image(key="-E3-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\elevator-closed.png"),sg.Image(key="-B3-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\\B3dd.png")], 
-          [sg.Image(key="-2F-", size=(300,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\F2.png"),sg.Image(key="-E2-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\elevator-closed.png"),sg.Image(key="-B2-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\\B2dd.png")],
-          [sg.Image(key="-1F-", size=(300,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\F1.png"),sg.Image(key="-E1-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\elevator-closed.png"),sg.Image(key="-B1-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\\B1dd.png")],
+layout = [[[sg.Image(key="-3F-", size=(300,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\F3-0.png"),sg.Image(key="-E3-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\elevator-closed.png"),sg.Image(key="-B3-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\\B3dd.png")], 
+          [sg.Image(key="-2F-", size=(300,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\F2-0.png"),sg.Image(key="-E2-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\elevator-closed.png"),sg.Image(key="-B2-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\\B2dd.png")],
+          [sg.Image(key="-1F-", size=(300,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\F1-0.png"),sg.Image(key="-E1-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\elevator-closed.png"),sg.Image(key="-B1-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\\B1dd.png")],
           [sg.Image(key="-0F-", size=(300,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\F0-0.png"),sg.Image(key="-E0-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\elevator-closed.png"),sg.Image(key="-B0-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\\B0dd.png")]]]
 
 #! Create main window
@@ -30,6 +30,9 @@ def floorsUpdate(): # updates elevators visualy
     while True:
         #UPDATES FLOORS N OF PPL
         window['-0F-'].update(filename= path + '/F0-' + str(building[0][1]) + '.png')
+        window['-1F-'].update(filename= path + '/F1-' + str(building[1][1]) + '.png')
+        window['-2F-'].update(filename= path + '/F2-' + str(building[2][1]) + '.png')
+        window['-3F-'].update(filename= path + '/F3-' + str(building[3][1]) + '.png')
 
         if kill_thread:
             break
@@ -70,9 +73,9 @@ def elevatorSystem():#elevator logic, called by thread, images updates also done
                 if elevator[1].count(floor) > 0 or building[floor][0]:
 
                     cprint('Opening doors at floor '+ str(floor),"green")
-                    window['-E'+ str(floor) +'-'].update(filename= path + '/elevator-opening.png')
+                    window['-E'+ str(floor) +'-'].update(filename= path + '/elevator-opening-'+str(elevator[2])+'.png')
                     time.sleep(SPEED)
-                    window['-E'+ str(floor) +'-'].update(filename= path + '/elevator-open.png')
+                    window['-E'+ str(floor) +'-'].update(filename= path + '/elevator-open-'+str(elevator[2])+'.png')
                     time.sleep(SPEED)
 
                 if elevator[1].count(floor) > 0:
@@ -86,6 +89,7 @@ def elevatorSystem():#elevator logic, called by thread, images updates also done
                     
                     if ((elevator[2] + building[floor][1]) < ELEVATOR_LIMIT):
                         elevator[2] += building[floor][1]
+                        window['-E'+ str(floor) +'-'].update(filename= path + '/elevator-open-'+str(elevator[2])+'.png')
                         print(str(building[floor][1]) + " ppl entered the elevator at floor" + str(floor))
                         building[floor][1] = 0
                         building[floor][0] = False
@@ -104,7 +108,7 @@ def elevatorSystem():#elevator logic, called by thread, images updates also done
 
                     
                     cprint("All set, closing doors","green")
-                    window['-E'+ str(floor) +'-'].update(filename= path + '/elevator-opening.png')
+                    window['-E'+ str(floor) +'-'].update(filename= path + '/elevator-opening-'+str(elevator[2])+'.png')
                     time.sleep(SPEED)
                     window['-E'+ str(floor) +'-'].update(filename= path + '/elevator-closed.png')
 
