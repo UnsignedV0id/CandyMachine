@@ -22,5 +22,5 @@
 [cs50](https://github.com/UnsignedV0id/Stuff/tree/master/cs50)
 -all the problemsets i've done in cs50 2020, mostly done in C.
 
-[^note]:
+[^deprecated]:
     either doesn't work or not finished, mostly not working, I finish my stuff.
