@@ -1,0 +1,1 @@
+SELECT COUNT(movie_id) as Top FROM ratings WHERE rating == 10
