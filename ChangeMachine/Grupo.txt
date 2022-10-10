@@ -1,0 +1,9 @@
+Grupo:
+	Gabriel Garcia Coelho RA:821161600
+	Rafael Balbino Martinez RA: 821115164
+	Eduardo Campos Ribeiro RA:820140310
+	Matheus Vinciguerra Alves RA: 820115559
+
+Info:
+	Para rodar o programa com as imagens alterar path nas linhas 114,124,134.
+	
