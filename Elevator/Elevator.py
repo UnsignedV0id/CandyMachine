@@ -10,15 +10,15 @@ os.system("color")
 colorama.init()
 sg.theme('dark purple ')   #*change
 
-path = os.getcwd()
+path = os.getcwd() + "\images"
 SPEED = 1
 ELEVATOR_LIMIT = 8
 
 #! Define the main window's contents (its a mess, dont even try to read it)
-layout = [[[sg.Image(key="-3F-", size=(300,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\F3-0.png"),sg.Image(key="-E3-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\elevator-closed.png"),sg.Image(key="-B3-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\\B3dd.png")], 
-          [sg.Image(key="-2F-", size=(300,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\F2-0.png"),sg.Image(key="-E2-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\elevator-closed.png"),sg.Image(key="-B2-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\\B2dd.png")],
-          [sg.Image(key="-1F-", size=(300,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\F1-0.png"),sg.Image(key="-E1-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\elevator-closed.png"),sg.Image(key="-B1-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\\B1dd.png")],
-          [sg.Image(key="-0F-", size=(300,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\F0-0.png"),sg.Image(key="-E0-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\elevator-closed.png"),sg.Image(key="-B0-", size=(100,100),enable_events = True, background_color="white smoke",filename = os.getcwd()+"\\B0dd.png")]]]
+layout = [[[sg.Image(key="-3F-", size=(300,100),enable_events = True, background_color="white smoke",filename =path +"\F3-0.png"),sg.Image(key="-E3-", size=(100,100),enable_events = True, background_color="white smoke",filename =path +"\elevator-closed.png"),sg.Image(key="-B3-", size=(100,100),enable_events = True, background_color="white smoke",filename =path +"\\B3dd.png")], 
+           [sg.Image(key="-2F-", size=(300,100),enable_events = True, background_color="white smoke",filename =path +"\F2-0.png"),sg.Image(key="-E2-", size=(100,100),enable_events = True, background_color="white smoke",filename =path +"\elevator-closed.png"),sg.Image(key="-B2-", size=(100,100),enable_events = True, background_color="white smoke",filename =path +"\\B2dd.png")],
+           [sg.Image(key="-1F-", size=(300,100),enable_events = True, background_color="white smoke",filename =path +"\F1-0.png"),sg.Image(key="-E1-", size=(100,100),enable_events = True, background_color="white smoke",filename =path +"\elevator-closed.png"),sg.Image(key="-B1-", size=(100,100),enable_events = True, background_color="white smoke",filename =path +"\\B1dd.png")],
+           [sg.Image(key="-0F-", size=(300,100),enable_events = True, background_color="white smoke",filename =path +"\F0-0.png"),sg.Image(key="-E0-", size=(100,100),enable_events = True, background_color="white smoke",filename =path +"\elevator-closed.png"),sg.Image(key="-B0-", size=(100,100),enable_events = True, background_color="white smoke",filename =path +"\\B0dd.png")]]]
 
 #! Create main window
 window = sg.Window('Building', layout,finalize=True) 
