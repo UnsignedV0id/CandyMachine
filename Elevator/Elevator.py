@@ -103,6 +103,7 @@ def elevatorSystem():#elevator logic, called by thread, images updates also done
                         diff = 0
 
                     while(len(elevator[1]) != elevator[2]):
+                        window['-E'+ str(floor) +'-'].update(filename= path + '/elevator-open-'+str(elevator[2])+'.png')
                         cprint("Awaiting button press","green")
                         time.sleep(SPEED)
 
