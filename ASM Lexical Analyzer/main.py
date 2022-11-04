@@ -7,6 +7,21 @@ def writeToken(id_,type_,line_,symbol_):
     buffer = 'ID: {:<3} TYPE: {:<4} LINE: {:<7} SYMBOL: {} \n'.format(id_,type_,line_,symbol_)
     tokens.write(buffer)
 
+def fillTokens(typeOfToken,listToFill):
+    startRead = False
+    with open("tokensList.txt","r") as tokensList:
+
+        for line in tokensList:
+            if(startRead):
+                listToFill.append(line.replace("\n", ""))
+            if(typeOfToken.lower() in line.lower()): startRead = not startRead
+        listToFill.pop()
+        return listToFill
+
+
+keywords = []
+keywords = fillTokens("keywords", keywords)
+
 tokenId = 0
 
 tokenBuffer = ''
@@ -54,8 +69,11 @@ with open('code.asm') as asmCode:
                     tokenBuffer += str(line[charPos])
                     if(lineNum == fileSize and charPos  == len(line) - 1): break #check for last character in file
                     charPos +=1
-                    
-                if re.search(r'^[a-zA-Z|_.][a-zA-Z|_.|\d]+[:]?$', tokenBuffer): #Identifier
+
+                if(tokenBuffer.upper() in keywords):  #KEYWORDS  
+                    writeToken(tokenId,"KEY", str(lineNum + 1)+":"+str(charPos + 1), tokenBuffer)
+
+                elif re.search(r'^[a-zA-Z|_.][a-zA-Z|_.|\d]+[:]?$', tokenBuffer): #IDENTIFIERS
                     writeToken(tokenId,"IDN", str(lineNum + 1)+":"+str(charPos + 1), tokenBuffer)
                 
                 elif(tokenBuffer.isnumeric()):
@@ -85,3 +103,13 @@ with open('code.asm') as asmCode:
 
 asmCode.close()
 tokens.close()
+
+
+#usefull stuff 
+# https://www.tutorialspoint.com/assembly_programming/assembly_basic_syntax.htm
+# https://www.mycompiler.io/new/asm-x86_64
+# https://www.tutorialspoint.com/assembly_programming/assembly_basic_syntax.htm
+# https://www.cse.psu.edu/~kxc104/class/cmpen472/20s/hw/hw1/AssemSyntax.html
+# https://docs.oracle.com/cd/E19253-01/817-5477/817-5477.pdf
+# https://spot.pcc.edu/~wlara/asmx86/asmx86_manual_4.pdf
+# http://www.mathemainzel.info/files/x86asmref.html
