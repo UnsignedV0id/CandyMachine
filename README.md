@@ -9,7 +9,7 @@
 -Representing a elevator system which is based of a Pushdown Automaton, done with pyhton.
 
 [System-c19](https://github.com/UnsignedV0id/Stuff/tree/master/System-c19)
--Queue and database of a vaccination reservation system, done with java.[^deprecated]
+-Queue and database of a vaccination reservation system for covid, done with java.[^deprecated]
 
 [LeaguePredict](https://github.com/UnsignedV0id/Stuff/tree/master/LeaguePredict)
 -AI training to read league of legends databases and analyze the tier of champions, done with python.[^deprecated]
@@ -23,4 +23,4 @@
 -all the problemsets i've done in cs50 2020, mostly done in C.
 
 [^deprecated]:
-    either doesn't work or not finished, mostly not working, I finish my stuff.
+    either doesn't work anymore or not finished, mostly not working, I finish my stuff.
