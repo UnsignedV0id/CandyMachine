@@ -1,14 +1,11 @@
-;this is a comment !!!!!!!!!!
-*this is also !!!!!!!!!!!!!!!
-
 section .data
-    msg db "Hello world!", 0ah 
+    msg db "Hello world!", 0ah
 
 section .text
     global _start
 
 _start:
-    mov rax, 1 
+    mov rax, 1_0
     mov rdi, 1
     mov rsi, msg
     mov rdx, 13
