@@ -10,6 +10,15 @@ tokens = open("tokens.txt", "w")
 stdscr = curses.initscr()
 codeDisplay = curses.newwin(20, 115, 0, 5)
 tokenDisplay = curses.newwin(9, 115,21,0)
+#defines colors
+
+curses.start_color()
+
+curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_BLACK) #BLACK
+curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK) #YELLOW
+curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK) #RED
+curses.init_pair(4, curses.COLOR_GREEN, curses.COLOR_BLACK) #GREEN
+curses.init_pair(5, curses.COLOR_BLUE, curses.COLOR_BLACK) #BLUE
 
 with open('code.asm') as asmCode:
     asmLines = asmCode.readlines()
@@ -59,6 +68,7 @@ def fillCode(startLine):
             codeDisplay.addstr(x - startLine, 0, asmLines[x].rstrip())
     codeDisplay.refresh()
 
+
 def tokenDisplayUpdate(currentBuffer = "Empty line",found = "", type = "",id = ""):
     
     tokenDisplay.clear()
@@ -74,9 +84,37 @@ def tokenDisplayUpdate(currentBuffer = "Empty line",found = "", type = "",id = "
         tokenDisplay.addstr(5, 10, id)
         
     tokenDisplay.addstr(8, 0,"PRESS TO STEP THROUGH",curses.A_STANDOUT)
+
+    
+    tokenDisplay.addstr(0,60,"KEYS: ")
+    tokenDisplay.addstr(1,65,"IDN")
+    tokenDisplay.addstr(2,65,"KEY")
+    tokenDisplay.addstr(3,65,"NUM")
+    tokenDisplay.addstr(4,65,"STR")
+    tokenDisplay.addstr(5,65,"OPR")
+    tokenDisplay.addstr(6,65,"SYM")
+
+    if(type == "IDN"):
+        tokenDisplay.addstr(1,65,"IDN",curses.A_STANDOUT)
+    elif(type == "KEY"):
+        tokenDisplay.addstr(2,65,"KEY",curses.A_STANDOUT)
+    elif(type == "NUM"):
+        tokenDisplay.addstr(3,65,"NUM",curses.A_STANDOUT)
+    elif(type == "STR"):
+        tokenDisplay.addstr(4,65,"STR",curses.A_STANDOUT)
+    elif(type == "OPR"):
+        tokenDisplay.addstr(5,65,"OPR",curses.A_STANDOUT)
+    elif(type == "SYM"):
+        tokenDisplay.addstr(6,65,"SYM",curses.A_STANDOUT)
+
+
+
+          
     tokenDisplay.refresh()
     stdscr.getkey()
-    
+
+
+
 
 ## RENDER FUNCTIONS
 
@@ -87,6 +125,7 @@ def main(stdscr):
     stdscr.clear()
     codeDisplay.clear() 
     tokenDisplay.clear()
+
     stdscr.refresh()
     codeDisplay.refresh()
     tokenDisplay.refresh()
@@ -114,13 +153,16 @@ def main(stdscr):
     stdscr.getkey()
 
     for lineNum, line in enumerate(asmLines, start=1):
-        if(error):break #checks if i got an error
+        if(error):break #checks if an error
+
         if lineNum == 1: 
             tokenDisplay.clear()
             tokenDisplay.refresh()
 
         else:
+            
             tokenDisplayUpdate("NEXT LINE >>")
+            
 
         fillCode(lineNum)
         
