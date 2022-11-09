@@ -10,19 +10,19 @@ tokens = open("tokens.txt", "w")
 stdscr = curses.initscr()
 codeDisplay = curses.newwin(20, 115, 0, 5) #size,size,cord x, cordy
 tokenDisplay = curses.newwin(9, 115, 21,0)
+
 #defines colors
-
-curses.start_color()
-
-curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_BLACK) #BLACK
-curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK) #YELLOW
-curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK) #RED
-curses.init_pair(4, curses.COLOR_GREEN, curses.COLOR_BLACK) #GREEN
-curses.init_pair(5, curses.COLOR_BLUE, curses.COLOR_BLACK) #BLUE
+#didnt managed to make colors work
+# curses.start_color()
+# curses.use_default_colors()
+# # curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_BLACK) #BLACK
+# # curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK) #YELLOW
+# # curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK) #RED
+# # curses.init_pair(4, curses.COLOR_GREEN, curses.COLOR_BLACK) #GREEN
+# # curses.init_pair(5, curses.COLOR_BLUE, curses.COLOR_BLACK) #BLUE
 
 with open('code.asm') as asmCode:
     asmLines = asmCode.readlines()
-
 
 def checkNumeric(_string):
     isNumeric = False
@@ -61,7 +61,7 @@ def fillCode(startLine):
     codeDisplay.clear()
     for x in range(startLine, startLine + 20):
         stdscr.addstr(x - startLine,0 , str(x),curses.A_UNDERLINE)
-
+    stdscr.addstr(0,3,"->",curses.A_STANDOUT)
     startLine = startLine -1
     for x in range(startLine,startLine + 20):
         if x <= len(asmLines) -1:
@@ -84,7 +84,6 @@ def tokenDisplayUpdate(currentBuffer = "Empty line",found = "", type = "",id = "
         tokenDisplay.addstr(5, 10, id)
         
     tokenDisplay.addstr(8, 0,"PRESS TO STEP THROUGH",curses.A_STANDOUT)
-
     
     tokenDisplay.addstr(0,60,"KEYS: ")
     tokenDisplay.addstr(1,65,"IDN")
@@ -107,21 +106,18 @@ def tokenDisplayUpdate(currentBuffer = "Empty line",found = "", type = "",id = "
     elif(type == "SYM"):
         tokenDisplay.addstr(6,65,"SYM",curses.A_STANDOUT)
 
-
-
-          
     tokenDisplay.refresh()
     stdscr.getkey()
 
 
-
-
+def updatePoitnter(charPos,error=False):
+    codeDisplay.addstr(0,charPos -1,"_",curses.A_BOLD)
+    if(error):codeDisplay.addstr(0,charPos +1,"ERROR",curses.A_STANDOUT)
+    codeDisplay.refresh()
+    
 ## RENDER FUNCTIONS
 
-
 def main(stdscr):
-
-
     #starts screens with clear()
     stdscr.clear()
     codeDisplay.clear() 
@@ -130,6 +126,8 @@ def main(stdscr):
     stdscr.refresh()
     codeDisplay.refresh()
     tokenDisplay.refresh()
+
+    curses.curs_set(0)
 
     error = False
     blank = [" ", '\t']
@@ -162,20 +160,19 @@ def main(stdscr):
             tokenDisplay.refresh()
 
         else:
-            
             tokenDisplayUpdate("NEXT LINE >>")
-            
-
-        fillCode(lineNum)
         
         charPos = 0 #char pointer
         tokenBuffer = ''
+
+        fillCode(lineNum)
 
         while(charPos != len(line)):
 
             if(line[charPos] in comments): #* LINE END OR COMMENT 
                 tokenDisplayUpdate(";", ";", "SYM",str(tokenId))
                 writeToken(tokenId,"SYM", str(lineNum)+":"+str(charPos - len(tokenBuffer)), ";") #* SPECIAL CHAR
+                updatePoitnter(charPos +1)
                 tokenId += 1
                 break
 
@@ -183,6 +180,7 @@ def main(stdscr):
                     tokenBuffer += str(line[charPos])
                     
                     charPos+=1
+                    updatePoitnter(charPos)
                     
                     while(line[charPos] != '"'):
 
@@ -197,14 +195,17 @@ def main(stdscr):
                         tokenDisplayUpdate(tokenBuffer)
                         tokenBuffer += str(line[charPos])
                         charPos+=1
+                        updatePoitnter(charPos)
 
                     if(error):break 
                     tokenBuffer+='"'
                     charPos+=1
+                    updatePoitnter(charPos)
                     
                     tokenDisplayUpdate(tokenBuffer,tokenBuffer,"STR",str(tokenId))
                     writeToken(tokenId,"STR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), tokenBuffer) #* STRINGS
                     tokenId+=1
+
                     if(lineNum == len(asmLines)  and charPos == len(line) ): break #* exits if last char on file
                     tokenBuffer = ""
 
@@ -212,6 +213,7 @@ def main(stdscr):
                     tokenBuffer += str(line[charPos])
                     
                     charPos+=1
+                    updatePoitnter(charPos)
                     
                     while(line[charPos] != "'"):
 
@@ -226,20 +228,24 @@ def main(stdscr):
                         tokenDisplayUpdate(tokenBuffer)
                         tokenBuffer += str(line[charPos])
                         charPos+=1
+                        updatePoitnter(charPos)
                         
                     if(error):break 
+
                     tokenBuffer+="'"
                     charPos+=1
+                    updatePoitnter(charPos)
                     tokenDisplayUpdate(tokenBuffer,tokenBuffer,"STR",str(tokenId))
                     writeToken(tokenId,"STR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), tokenBuffer) #* STRINGS
                     tokenId+=1
+
                     if(lineNum == len(asmLines)  and charPos == len(line) ): break #exits if last char on file
                     tokenBuffer = ""
 
             elif(line[charPos] == '`'): #* CATCHES UNICODE LITERAL
                     tokenBuffer += str(line[charPos])
-                    
                     charPos+=1
+                    updatePoitnter(charPos)
                     
                     while(line[charPos] != '`'):
 
@@ -254,29 +260,31 @@ def main(stdscr):
                         tokenDisplayUpdate(tokenBuffer)
                         tokenBuffer += str(line[charPos])
                         charPos+=1
+                        updatePoitnter(charPos)
                         
                     if(error):break 
                     tokenBuffer+='`'
                     charPos+=1
+                    updatePoitnter(charPos)
                     tokenDisplayUpdate(tokenBuffer,tokenBuffer,"STR",str(tokenId))
                     writeToken(tokenId,"STR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), tokenBuffer) #* STRINGS
                     tokenId+=1
                     if(lineNum == len(asmLines)  and charPos == len(line) ): break #exits if last char on file
                     tokenBuffer = ""
-            
-
 
             elif(line[charPos] in ['<', '>']): #* CATCHES BITWISE OPERATOS
                     if(charPos + 1 <= len(line) - 1 and line[charPos] == ">" and line[charPos+1] == ">"):
                         tokenDisplayUpdate(">>",">>","OPR",str(tokenId))
                         writeToken(tokenId,"OPR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), ">>")
                         charPos +=2
+                        updatePoitnter(charPos)
                         tokenId +=1
 
                     elif(charPos + 1 <= len(line) - 1 and line[charPos] == "<" and line[charPos+1] == "<"):
                         tokenDisplayUpdate("<<","<<","OPR",str(tokenId))
                         writeToken(tokenId,"OPR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), ">>")
                         charPos +=2
+                        updatePoitnter(charPos)
                         tokenId +=1
                     else:
                         writeToken(tokenId,"ERR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), "MISSING DOUBLE OPERATOR BITWISE")#* ERROR IF MISSING END OF OPERATOR
@@ -289,6 +297,7 @@ def main(stdscr):
                 writeToken(tokenId,"OPR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), line[charPos])
                 tokenId +=1
                 charPos+=1
+                updatePoitnter(charPos)
 
             elif(line[charPos] in blank): charPos +=1 # skips spaces
 
@@ -298,26 +307,29 @@ def main(stdscr):
                 writeToken(tokenId,"SYM", str(lineNum)+":"+str(charPos - len(tokenBuffer)), line[charPos])
                 tokenId +=1
                 charPos+=1
+                updatePoitnter(charPos)
             
             elif(line[charPos] == "\n"): #* DETECTS LINE FEEDS \n
                 tokenDisplayUpdate("\\n","\\n", "SYM",str(tokenId) )
                 writeToken(tokenId,"SYM", str(lineNum)+":"+str(charPos - len(tokenBuffer)), "\\n")
                 tokenId +=1
                 charPos+=1
+                updatePoitnter(charPos)
 
             else:
 
                 while(line[charPos] not in separators and line[charPos] != "\n"): #* SEPARTES WORDS
+                    
                     tokenBuffer += str(line[charPos])
                     tokenDisplayUpdate(tokenBuffer)
                     charPos+=1
+                    updatePoitnter(charPos)
                     if(lineNum == len(asmLines)  and charPos == len(line) ): break #exits if last char on file
                 
                 if(checkNumeric(tokenBuffer)): #* NUMERIC
                     tokenDisplayUpdate(tokenBuffer,tokenBuffer,"NUM",str(tokenId))
                     writeToken(tokenId,"NUM", str(lineNum)+":"+str(charPos - len(tokenBuffer)), tokenBuffer)
                     tokenId +=1
-
 
                 elif(tokenBuffer in keywords): #* KEYWORDS
                     tokenDisplayUpdate(tokenBuffer, tokenBuffer, "KEY", str(tokenId))
@@ -333,6 +345,8 @@ def main(stdscr):
                     tokenDisplayUpdate(tokenBuffer,tokenBuffer,"ERR","ERR")
                     writeToken(tokenId,"ERR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), tokenBuffer)
                     error = True
+                    updatePoitnter(charPos,True)
+                    stdscr.getkey()
                     break
                     tokenId +=1
                 tokenBuffer = ""
