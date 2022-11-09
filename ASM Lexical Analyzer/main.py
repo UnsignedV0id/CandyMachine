@@ -8,8 +8,8 @@ tokens = open("tokens.txt", "w")
 
 #define screens
 stdscr = curses.initscr()
-codeDisplay = curses.newwin(20, 115, 0, 5)
-tokenDisplay = curses.newwin(9, 115,21,0)
+codeDisplay = curses.newwin(20, 115, 0, 5) #size,size,cord x, cordy
+tokenDisplay = curses.newwin(9, 115, 21,0)
 #defines colors
 
 curses.start_color()
@@ -26,7 +26,7 @@ with open('code.asm') as asmCode:
 
 def checkNumeric(_string):
     isNumeric = False
-    if(re.search(r'^((0[by])?((([0-1]+)(_?))*))?$', _string)): isNumeric = True #binário
+    if(re.search(r'^((0[by])?((([0-1]+)(_?))*))?$', _string)): isNumeric = True #binário     
     elif(re.search(r'^((0[dt])?((([0-9]+)(_?))*))?$', _string)): isNumeric = True #decimal
     elif(re.search(r'^((0[oq])?((([0-7]+)(_?))*))?$', _string)): isNumeric = True #octal
     elif(re.search(r'^((0[h])?((([0-9A-Fa-f]+)(_?))*))?$', _string)): isNumeric = True #hexa
@@ -43,7 +43,7 @@ def writeToken(id_,type_,line_,symbol_):
     buffer = 'ID: {:<3} TYPE: {:<4} LINE: {:<7} SYMBOL: {} \n'.format(id_,type_,line_,symbol_)
     tokens.write(buffer)
 
-def fillTokens(typeOfToken,listToFill):
+def fillTokens(typeOfToken,listToFill):#fill tokens keyword list
     startRead = False
     with open("tokensList.txt","r") as tokensList:
 
@@ -118,6 +118,7 @@ def tokenDisplayUpdate(currentBuffer = "Empty line",found = "", type = "",id = "
 
 ## RENDER FUNCTIONS
 
+
 def main(stdscr):
 
 
@@ -134,7 +135,8 @@ def main(stdscr):
     blank = [" ", '\t']
     comments = [';']
     operators = ["+", "-", "*", "/", '&', '|', ">" , "<" , "%", "!" , "^", ">>", "<<"] #double bitwise used for verify and to match > >>
-    specialChar = ['(', ')', '[', ']', ',', '$', ]
+    specialChar = ['(', ')', '[', ']', ',', '$' ]
+
 
     separators = []
     separators.extend(blank)
@@ -152,7 +154,7 @@ def main(stdscr):
     tokenDisplay.refresh()
     stdscr.getkey()
 
-    for lineNum, line in enumerate(asmLines, start=1):
+    for lineNum, line in enumerate(asmLines, start=1): #loops all lines
         if(error):break #checks if an error
 
         if lineNum == 1: 
@@ -171,7 +173,7 @@ def main(stdscr):
 
         while(charPos != len(line)):
 
-            if(line[charPos] in comments): #* LINE END OR COMMENT
+            if(line[charPos] in comments): #* LINE END OR COMMENT 
                 tokenDisplayUpdate(";", ";", "SYM",str(tokenId))
                 writeToken(tokenId,"SYM", str(lineNum)+":"+str(charPos - len(tokenBuffer)), ";") #* SPECIAL CHAR
                 tokenId += 1
@@ -199,6 +201,7 @@ def main(stdscr):
                     if(error):break 
                     tokenBuffer+='"'
                     charPos+=1
+                    
                     tokenDisplayUpdate(tokenBuffer,tokenBuffer,"STR",str(tokenId))
                     writeToken(tokenId,"STR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), tokenBuffer) #* STRINGS
                     tokenId+=1

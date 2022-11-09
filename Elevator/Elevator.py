@@ -1,4 +1,3 @@
-
 import os
 import colorama
 from termcolor import cprint
@@ -8,6 +7,7 @@ import PySimpleGUI as sg
 
 os.system("color")
 colorama.init()
+
 sg.theme('dark purple ')   #*change
 
 path = os.getcwd() + "\images"
@@ -23,8 +23,8 @@ layout = [[[sg.Image(key="-3F-", size=(300,100),enable_events = True, background
 #! Create main window
 window = sg.Window('Building', layout,finalize=True) 
 
-building = [[False,0],[False,0],[False,0],[False,0]] #one list for each flor >  [state(calling elevator),n ppl awaiting, n ppl incoming]
-elevator = [0,[],0,True]#current floor, floors to go, n of ppl inside,state change(active or not, used to set buttons state)
+building = [[False,0],[False,0],[False,0],[False,0]] #one list for each flor >  [state(calling elevator), n ppl incoming]
+elevator = [0,[],0,True] # current floor, floors to go, n of ppl inside,state change(active or not, used to set buttons state)
 
 def floorsUpdate(): # updates elevators visualy
     while True:
@@ -34,10 +34,10 @@ def floorsUpdate(): # updates elevators visualy
         window['-2F-'].update(filename= path + '/F2-' + str(building[2][1]) + '.png')
         window['-3F-'].update(filename= path + '/F3-' + str(building[3][1]) + '.png')
 
-        if kill_thread:
-            break
+        if kill_thread: #threading
+            break #breaks thread
 
-def elevatorSystem():#elevator logic, called by thread, images updates also done here
+def elevatorSystem(): # elevator logic, called by thread, images updates also done here
     while True:
 
         #BUTTONS STATE
@@ -102,6 +102,7 @@ def elevatorSystem():#elevator logic, called by thread, images updates also done
                         building[floor][0] = False
                         diff = 0
 
+                    #awaits the correct number of button presses
                     while(len(elevator[1]) != elevator[2]):
                         window['-E'+ str(floor) +'-'].update(filename= path + '/elevator-open-'+str(elevator[2])+'.png')
                         cprint("Awaiting button press","green")
@@ -118,6 +119,7 @@ def elevatorSystem():#elevator logic, called by thread, images updates also done
                     time.sleep(SPEED)
         
         ##Adds or subtract floor depending on closest target floor
+
         temp = 10
         tempCalling = []
 
@@ -127,6 +129,7 @@ def elevatorSystem():#elevator logic, called by thread, images updates also done
 
         if elevator[1]:
             for i in elevator[1]:
+
                 if abs(elevator[0] - i) < temp:
                     temp = i
             
@@ -139,6 +142,7 @@ def elevatorSystem():#elevator logic, called by thread, images updates also done
                 cprint("Going down!","green")
                 time.sleep(SPEED)
             else:elevator[0] = 0
+
         elif tempCalling:
                             
             for i in tempCalling:
@@ -174,7 +178,7 @@ while True:
 
     if event == sg.WINDOW_CLOSED: #? Exits
         break
-    #*Add ppl ========================================================
+    #*Add people ========================================================
     elif event == "-3F-":
         
         if building[3][1] > 4:
@@ -263,6 +267,7 @@ print(elevator)
 
 #kills threads
 kill_thread = True
+
 et.join()
 t.join()
 

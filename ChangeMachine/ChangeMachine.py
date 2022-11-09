@@ -3,6 +3,7 @@ import PySimpleGUI as sg
 sg.theme('dark purple ')   
 path = os.getcwd()
 
+
 #! Create Checkout window
 def openBuyWindow(price,product):
         layout = [  [sg.Text("You are buying $" + str(price) + " worth of " + product, text_color='green')],
@@ -10,14 +11,16 @@ def openBuyWindow(price,product):
                     ,sg.Checkbox('Subtract', k='-MINUSMODE-',enable_events=True)],
                     [sg.Text(" $ 0",text_color="green",font=("bold",20),k = "-INSERTED-")],
                     [sg.Button('Pay',button_color="orange"), sg.Button('Cancel',button_color='red')]]
+
         window = sg.Window('Checkout!', layout, modal=True)
 
-        cash = [[1,0], [2,0], [5,0]] #Value, Inserted , QAvailible, QReturn to client
+        cash = [[1,0], [2,0], [5,0]] #* Value, Inserted , QAvailible, QReturn to client
         minus = False
         easter = 0
 
         while True:
             event, values = window.read()
+
             if event == 'Cancel' or event == sg.WIN_CLOSED:
                 break
 
@@ -47,6 +50,7 @@ def openBuyWindow(price,product):
                 
             elif (event == '1' or  event == '2' or event == '3') and (minus == False and cash[0][1] + cash[1][1]*2 + cash[2][1]*5 >= 8):
                 sg.popup("Maximum of money  reached", title=":(",text_color="red")
+
             elif event == '1' and minus == False:
                 cash[0][1] += 1
             elif event == '2' and minus == False:
@@ -78,6 +82,7 @@ def openBuyWindow(price,product):
 
             if (cash[0][1] + cash[1][1]*2 + cash[2][1]*5) >= price:
                 window['Pay'].update(button_color="green")
+
             else:
                 window['Pay'].update(button_color="orange")
 
@@ -100,7 +105,8 @@ product = "none"
 
 #! Event loop
 while True:
-    event, values = window.read()                   
+    event, values = window.read()       
+                
     if event == sg.WINDOW_CLOSED or event == 'Quit': #? Exits
         break
 
