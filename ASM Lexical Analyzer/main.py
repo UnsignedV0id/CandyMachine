@@ -189,6 +189,8 @@ def main(stdscr):
                             writeToken(tokenId,"ERR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), "MISSING CLOSING \"") #* ERROR IF MISSING END OF STRING
                             tokenDisplayUpdate(tokenBuffer,tokenBuffer,"ERR","ERR")
                             error=True
+                            updatePoitnter(charPos,True)
+                            stdscr.getkey()
                             tokenId +=1
                             break
 
@@ -222,6 +224,8 @@ def main(stdscr):
                             writeToken(tokenId,"ERR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), "MISSING CLOSING \"") #* ERROR IF MISSING END OF STRING
                             tokenDisplayUpdate(tokenBuffer,tokenBuffer,"ERR","ERR")
                             error=True
+                            updatePoitnter(charPos,True)
+                            stdscr.getkey()
                             tokenId +=1
                             break
 
@@ -254,6 +258,8 @@ def main(stdscr):
                             writeToken(tokenId,"ERR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), "MISSING CLOSING \"") #* ERROR IF MISSING END OF STRING
                             tokenDisplayUpdate(tokenBuffer,tokenBuffer,"ERR","ERR")
                             error=True
+                            updatePoitnter(charPos,True)
+                            stdscr.getkey()
                             tokenId +=1
                             break
 
@@ -274,13 +280,16 @@ def main(stdscr):
 
             elif(line[charPos] in ['<', '>']): #* CATCHES BITWISE OPERATOS
                     if(charPos + 1 <= len(line) - 1 and line[charPos] == ">" and line[charPos+1] == ">"):
+                        updatePoitnter(charPos + 1)
                         tokenDisplayUpdate(">>",">>","OPR",str(tokenId))
                         writeToken(tokenId,"OPR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), ">>")
                         charPos +=2
-                        updatePoitnter(charPos)
+                        updatePoitnter(charPos )
+                        # updatePoitnter(charPos)
                         tokenId +=1
 
                     elif(charPos + 1 <= len(line) - 1 and line[charPos] == "<" and line[charPos+1] == "<"):
+                        updatePoitnter(charPos + 1)
                         tokenDisplayUpdate("<<","<<","OPR",str(tokenId))
                         writeToken(tokenId,"OPR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), ">>")
                         charPos +=2
@@ -290,6 +299,8 @@ def main(stdscr):
                         writeToken(tokenId,"ERR", str(lineNum)+":"+str(charPos - len(tokenBuffer)), "MISSING DOUBLE OPERATOR BITWISE")#* ERROR IF MISSING END OF OPERATOR
                         tokenDisplayUpdate(line[charPos],line[charPos],"ERR","ERR")
                         error=True
+                        updatePoitnter(charPos,True)
+                        stdscr.getkey()
                         break
             
             elif(line[charPos] in operators): #* CATCHES OPERATORS
