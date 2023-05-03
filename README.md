@@ -3,6 +3,9 @@
 
 ### University stuff
 
+[EncryptPOG](https://github.com/UnsignedV0id/Stuff/tree/master/EncryptPOG)
+- Basic UI that shows images based on user input and simple secret codes.
+
 [ASM Lexical Analyzer](https://github.com/UnsignedV0id/Stuff/tree/master/ASM%20Lexical%20Analyzer)
 - Lexical Analyzer for a generalized version o the ASM language, done with python.
 
