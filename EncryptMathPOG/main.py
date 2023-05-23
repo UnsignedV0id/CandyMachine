@@ -94,8 +94,8 @@ while True:
                 currentStage += 1
                 currentCrypto = encrypt(questions[currentStage],currentStage)
 
-                window['-Key-'].update(value=currentCrypto[0])
-                window['-Crypto-'].update(value=currentCrypto[1])
+                window['-Key-'].update(value="Key: " + currentCrypto[0])
+                window['-Crypto-'].update(value="Crypto: " +currentCrypto[1])
                 window['-Help0-'].update(value=currentCrypto[2])
                 window['-Help1-'].update(value=currentCrypto[3])
                 window['-Help2-'].update(value=questions[currentStage])
