@@ -72,8 +72,8 @@ hintVisible = False
 
 sg.theme('black')
 
-layout = [  [sg.Text( text = "Key: " + currentCrypto[0] , key = "-Key-" , text_color = "yellow", font = ("Arial Black",30) )] ,
-            [sg.Text( text = "Crypto: " + currentCrypto[1], key = "-Crypto-" , text_color = "white", font = ("Arial Black",30) )],
+layout = [  [sg.Text( text = "Crypto: " + currentCrypto[0] , key = "-Key-" , text_color = "yellow", font = ("Arial Black",30) )] ,
+            [sg.Text( text = "Key: " + currentCrypto[1], key = "-Crypto-" , text_color = "white", font = ("Arial Black",30) )],
             [sg.Text('Answer: ',font = ("Arial Black",30)), sg.InputText(k = '-INPUT-',size = (25), font = ("Arial Black",30))],
             [sg.Button('Enter', k = '-ENTER-', bind_return_key = True), sg.Button('Exit') ],
             [sg.Text( text = currentCrypto[2], key = "-Help0-" , text_color = "white", font = ("Courier",20),visible = hintVisible)],
