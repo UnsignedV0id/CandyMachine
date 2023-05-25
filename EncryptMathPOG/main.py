@@ -24,7 +24,7 @@ def encrypt(word, stage):
 
     if stage == 0:
 
-        key1 = random.randint(65,90) 
+        key1 = random.randint(65,89) 
         offset = key1 - 64
         word1 = ''.join(( chr( 97 + ( ord(l) - 97 + offset ) % 26) for l in word))
         cAlphabet = ''.join(( chr( 97 + ( ord(letter) - 97 + offset ) % 26) for letter in alphabet))
@@ -32,7 +32,7 @@ def encrypt(word, stage):
 
     elif stage == 1:
 
-        key1 = random.randint(97,122) 
+        key1 = random.randint(97,121) 
         offset = (key1 - 96) * -1
         word1 = ''.join(( chr( 97 + ( ord(l) - 97 + offset ) % 26) for l in word))
         cAlphabet = ''.join(( chr( 97 + ( ord(letter) - 97 + offset ) % 26) for letter in alphabet))
@@ -72,8 +72,8 @@ hintVisible = False
 
 sg.theme('black')
 
-layout = [  [sg.Text( text = "Crypto: " + currentCrypto[0] , key = "-Key-" , text_color = "yellow", font = ("Arial Black",30) )] ,
-            [sg.Text( text = "Key: " + currentCrypto[1], key = "-Crypto-" , text_color = "white", font = ("Arial Black",30) )],
+layout = [  [sg.Text( text = "Crypto: " + currentCrypto[0] , key = "-Crypto-" , text_color = "white", font = ("Arial Black",30) )] ,
+            [sg.Text( text = "Key: " + currentCrypto[1], key = "-Key-" , text_color = "yellow", font = ("Arial Black",30) )],
             [sg.Text('Answer: ',font = ("Arial Black",30)), sg.InputText(k = '-INPUT-',size = (25), font = ("Arial Black",30))],
             [sg.Button('Enter', k = '-ENTER-', bind_return_key = True), sg.Button('Exit') ],
             [sg.Text( text = currentCrypto[2], key = "-Help0-" , text_color = "white", font = ("Courier",20),visible = hintVisible)],
@@ -94,8 +94,8 @@ while True:
                 currentStage += 1
                 currentCrypto = encrypt(questions[currentStage],currentStage)
 
-                window['-Key-'].update(value="Key: " + currentCrypto[0])
-                window['-Crypto-'].update(value="Crypto: " +currentCrypto[1])
+                window['-Crypto-'].update(value="Crypto: " + currentCrypto[0])
+                window['-Key-'].update(value="Key: " +currentCrypto[1])
                 window['-Help0-'].update(value=currentCrypto[2])
                 window['-Help1-'].update(value=currentCrypto[3])
                 window['-Help2-'].update(value=questions[currentStage])
